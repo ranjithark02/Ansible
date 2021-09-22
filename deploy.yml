@@ -8,4 +8,12 @@
   - name: Start docker
     service: name=docker state=started
   - name: Run the image from dockerhub
+  # this is the test task
     command: docker run -itd -P nginx
+  - name: get the dockerfile
+    git: repo="https://github.com/devops-trainer/dockerdemo.git"
+         dest=/tmp/dockerdir
+  - name: build the dockerfile
+    command: chdir=/tmp/dockerdir docker build -t myimage:ansible .
+  - name: run the docker image
+    command: docker run -itd -P myimage:ansible
